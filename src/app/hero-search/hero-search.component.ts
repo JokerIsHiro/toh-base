@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { debounceTime, distinctUntilChanged, Observable, Subject, switchMap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, EMPTY, Observable, Subject, switchMap } from 'rxjs';
 import { Hero } from '../hero.interface';
 import { HeroService } from '../hero.service';
 import { RouterModule } from '@angular/router';
@@ -12,7 +12,8 @@ import { CommonModule } from '@angular/common';
   styleUrl: './hero-search.component.scss'
 })
 export class HeroSearchComponent implements OnInit {
-  heroes$!: Observable<Hero[]>;
+  heroes$: Observable<Hero[]> = EMPTY;
+
   private searchTerms = new Subject<string>();
 
   constructor(private heroService: HeroService) {}

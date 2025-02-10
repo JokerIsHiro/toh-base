@@ -7,19 +7,33 @@ import { RouterModule } from '@angular/router';
   selector: 'app-heroes',
   imports: [RouterModule],
   templateUrl: './heroes.component.html',
-  styleUrl: './heroes.component.scss'
+  styleUrl: './heroes.component.scss',
 })
 export class HeroesComponent implements OnInit {
   public heroes: Hero[] = [];
+  totalHeroes: number = 0;
+  currentPage: number = 1;
+  heroesPerPage: number = 20;
+  totalPages: number = 0;
 
-
-  constructor(
-    private heroService: HeroService
-  ) {
-
-  }
+  constructor(private heroService: HeroService) {}
 
   ngOnInit(): void {
-    this.heroService.getHeroes().subscribe(heroes => this.heroes = heroes);
+    this.loadHeroes();
+  }
+
+  loadHeroes(): void {
+    this.heroService.getPaginatedHeroes(this.currentPage, this.heroesPerPage).subscribe((heroe) => {
+      this.heroes = heroe.heroes;
+      this.totalHeroes = heroe.total;
+      this.totalPages = Math.ceil(this.totalHeroes / this.heroesPerPage);
+    });
+  }
+
+  changePage(page: number): void {
+    if (page > 0 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.loadHeroes();
+    }
   }
 }

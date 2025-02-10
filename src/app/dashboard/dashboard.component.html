@@ -1,14 +1,13 @@
-
-
-<h2>Top 5 Heroes</h2>
-<div class="heroes-menu">
-    @if (heroes) {
-    @for (hero of heroes; track hero.id) {
-    <a routerLink="/hero/{{hero.id}}">
-        {{hero.name}}
-    </a>
-    }
-    }
-</div>
-
 <app-hero-search></app-hero-search>
+
+<div class="heroes-menu">
+  @if (heroes) { @for (hero of heroes; track hero.id) {
+  <a routerLink="/hero/{{ hero.id }}">
+    <img
+      src="{{ hero.thumbnail?.path }}.{{ hero.thumbnail?.extension }}"
+      width="100"
+    />
+    {{ hero.name }}
+  </a>
+  } }
+</div>

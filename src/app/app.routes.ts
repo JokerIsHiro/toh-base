@@ -19,6 +19,10 @@ export const routes: Routes = [
     {
         path: "**",
         redirectTo: "dashboard"
+    },
+    {
+        path: "characters/:id",
+        redirectTo: "hero/:id"
     }
   
 ];
