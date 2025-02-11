@@ -21,6 +21,7 @@ import { HeroSearchComponent } from '../hero-search/hero-search.component';
 })
 export class DashboardComponent implements OnInit {
   heroes: Hero[] = [];
+  loading = false;
 
   constructor(private heroService: HeroService) {}
 
@@ -29,8 +30,12 @@ export class DashboardComponent implements OnInit {
   }
 
   loadRandomHeroes(): void {
+
+    this.loading = true;
+
     this.heroService.getHeroes().subscribe((heroe) => {
       this.heroes = heroe;
+      this.loading = false;
     });
   }
 }

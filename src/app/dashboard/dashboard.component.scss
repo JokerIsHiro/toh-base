@@ -1,55 +1,88 @@
 /* DashboardComponent's private CSS styles */
 
 h2 {
-    text-align: center;
-  }
-  
+  text-align: center;
+}
+
+.heroes-menu {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.hero-card {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  border-radius: 15px;
+  background: #333;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.hero-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+}
+
+.hero-img-wrapper {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-overlay {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  text-align: center;
+  font-family: Arial, sans-serif;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.hero-card:hover .hero-overlay {
+  opacity: 1;
+}
+
+.hero-name {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.hero-name span {
+  display: block;
+  width: 50px;
+  height: 2px;
+  background: white;
+  margin: 8px auto;
+}
+
+@media (max-width: 768px) {
   .heroes-menu {
-    padding: 0;
-    margin: auto;
-    max-width: 1000px;
-  
-    /* flexbox */
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    align-content: flex-start;
-    align-items: flex-start;
+    grid-template-columns: repeat(2, 1fr);
+    /* 2 columnas en pantallas pequeñas */
   }
-  
-  a {
-    background-color: #3f525c;
-    border-radius: 2px;
-    padding: 1rem;
-    font-size: 1.2rem;
-    text-decoration: none;
-    display: inline-block;
-    color: #fff;
-    text-align: center;
-    width: 100%;
-    min-width: 70px;
-    margin: .5rem auto;
-    box-sizing: border-box;
-  
-    /* flexbox */
-    order: 0;
-    flex: 0 1 auto;
-    align-self: auto;
+}
+
+@media (max-width: 480px) {
+  .heroes-menu {
+    grid-template-columns: 1fr;
+    /* 1 columna en pantallas muy pequeñas */
   }
-  
-  @media (min-width: 600px) {
-    a {
-      width: 18%;
-      box-sizing: content-box;
-    }
-  }
-  
-  a:hover {
-    background-color: black;
-  }
-  
+}

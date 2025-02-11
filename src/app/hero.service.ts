@@ -12,25 +12,19 @@ export class HeroService {
   constructor(private http: HttpClient) {}
 
   public getHeroes(): Observable<Hero[]> {
-
     const offset = Math.floor(Math.random() * 1564);
+
     return this.http
-      .get<{ data: { results: Hero[] } }>(`${this.url}/characters`, {
+      .get<Hero[]>(`${this.url}/characters`, {
         params: {
           apikey: '06f1c915f17bf6a59b637e6b8ba49871',
           ts: 'juan',
           hash: 'b87b42b3a738b4bf3da0a5aec4185498',
-          limit: "12",
-          offset: offset.toString()
+          limit: '12',
+          offset: offset.toString(),
         },
       })
-      .pipe(
-        map((heroe) => heroe.data.results),
-        catchError((error) => {
-          console.error('Error al obtener héroes aleatorios:', error);
-          return of([]); // Devuelve un array vacío en caso de error
-        })
-      );
+      .pipe(map((response: any) => response.data.results));
   }
 
   public getPaginatedHeroes(
@@ -48,14 +42,14 @@ export class HeroService {
             ts: 'juan',
             hash: 'b87b42b3a738b4bf3da0a5aec4185498',
             limit: itemsPerPage.toString(),
-            offset: offset.toString(), // Establecemos el offset
+            offset: offset.toString(),
           },
         }
       )
       .pipe(
         map((heroe) => ({
-          heroes: heroe.data.results, // Héroes de la página actual
-          total: heroe.data.total, // Total de héroes disponibles
+          heroes: heroe.data.results,
+          total: heroe.data.total,
         })),
         catchError((error) => {
           console.error('Error al obtener héroes:', error);
@@ -73,7 +67,7 @@ export class HeroService {
           hash: 'b87b42b3a738b4bf3da0a5aec4185498',
         },
       })
-      .pipe(map((heroe: any) => heroe.data.results[0]));
+      .pipe(map((data: any) => data.data.results[0]));
   }
 
   public searchHeroes(term: string): Observable<Hero[]> {
@@ -81,21 +75,13 @@ export class HeroService {
       return of([]);
     }
 
-    return this.http
-      .get<{ data: { results: Hero[] } }>(`${this.url}/characters`, {
-        params: {
-          nameStartsWith: term,
-          apikey: '06f1c915f17bf6a59b637e6b8ba49871',
-          ts: 'juan',
-          hash: 'b87b42b3a738b4bf3da0a5aec4185498',
-        },
-      })
-      .pipe(
-        map((heroe) => heroe.data.results), // Extrae la lista de héroes
-        catchError((error) => {
-          console.error('Error al buscar héroes:', error);
-          return of([]); // Devuelve un array vacío en caso de error
-        })
-      );
+    return this.http.get<Hero[]>(`${this.url}/characters`, {
+      params: {
+        nameStartsWith: term.trim(),
+        apikey: '06f1c915f17bf6a59b637e6b8ba49871',
+        ts: 'juan',
+        hash: 'b87b42b3a738b4bf3da0a5aec4185498',
+      },
+    }).pipe(map((response: any) => response.data.results));
   }
 }

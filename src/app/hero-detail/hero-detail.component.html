@@ -1,6 +1,8 @@
 @if (hero) {
 <div>
-    <img src="{{ hero.thumbnail?.path }}.{{ hero.thumbnail?.extension }}" width="500">
+    <img 
+    [attr.loading]="'lazy'"
+    src="{{ hero.thumbnail?.path }}.{{ hero.thumbnail?.extension }}" width="500">
     <h2>{{hero.name | uppercase}} Details</h2>
     <div><span>{{hero.name}} aparece en </span>{{hero.comics.available}} comics</div>
     <div>

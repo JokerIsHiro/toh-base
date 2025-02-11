@@ -15,6 +15,7 @@ export class HeroesComponent implements OnInit {
   currentPage: number = 1;
   heroesPerPage: number = 20;
   totalPages: number = 0;
+  loading = false;
 
   constructor(private heroService: HeroService) {}
 
@@ -23,11 +24,16 @@ export class HeroesComponent implements OnInit {
   }
 
   loadHeroes(): void {
-    this.heroService.getPaginatedHeroes(this.currentPage, this.heroesPerPage).subscribe((heroe) => {
-      this.heroes = heroe.heroes;
-      this.totalHeroes = heroe.total;
-      this.totalPages = Math.ceil(this.totalHeroes / this.heroesPerPage);
-    });
+    this.loading = true;
+    
+    this.heroService
+      .getPaginatedHeroes(this.currentPage, this.heroesPerPage)
+      .subscribe((heroe) => {
+        this.heroes = heroe.heroes;
+        this.totalHeroes = heroe.total;
+        this.totalPages = Math.ceil(this.totalHeroes / this.heroesPerPage);
+        this.loading = false;
+      });
   }
 
   changePage(page: number): void {
