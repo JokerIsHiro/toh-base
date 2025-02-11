@@ -16,3 +16,10 @@ export enum Extension {
   GIF = 'gif',
   Jpg = 'jpg',
 }
+
+export interface HeroResponse{
+    data: {
+        results: Hero[];
+        total?: number;
+    }
+}

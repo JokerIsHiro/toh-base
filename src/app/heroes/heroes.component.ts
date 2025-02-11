@@ -25,7 +25,6 @@ export class HeroesComponent implements OnInit {
 
   loadHeroes(): void {
     this.loading = true;
-    
     this.heroService
       .getPaginatedHeroes(this.currentPage, this.heroesPerPage)
       .subscribe((heroe) => {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Hero } from './hero.interface';
+import { Hero, HeroResponse } from './hero.interface';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, Observable, of, tap } from 'rxjs';
 
@@ -15,7 +15,7 @@ export class HeroService {
     const offset = Math.floor(Math.random() * 1564);
 
     return this.http
-      .get<Hero[]>(`${this.url}/characters`, {
+      .get<HeroResponse>(`${this.url}/characters`, {
         params: {
           apikey: '06f1c915f17bf6a59b637e6b8ba49871',
           ts: 'juan',
@@ -24,7 +24,7 @@ export class HeroService {
           offset: offset.toString(),
         },
       })
-      .pipe(map((response: any) => response.data.results));
+      .pipe(map((response) => response.data.results));
   }
 
   public getPaginatedHeroes(
@@ -60,14 +60,14 @@ export class HeroService {
 
   public getHero(id: number): Observable<Hero> {
     return this.http
-      .get<Hero>(`${this.url}/characters/${id}`, {
+      .get<HeroResponse>(`${this.url}/characters/${id}`, {
         params: {
           apikey: '06f1c915f17bf6a59b637e6b8ba49871',
           ts: 'juan',
           hash: 'b87b42b3a738b4bf3da0a5aec4185498',
         },
       })
-      .pipe(map((data: any) => data.data.results[0]));
+      .pipe(map((response) => response.data.results[0]));
   }
 
   public searchHeroes(term: string): Observable<Hero[]> {
@@ -75,13 +75,15 @@ export class HeroService {
       return of([]);
     }
 
-    return this.http.get<Hero[]>(`${this.url}/characters`, {
-      params: {
-        nameStartsWith: term.trim(),
-        apikey: '06f1c915f17bf6a59b637e6b8ba49871',
-        ts: 'juan',
-        hash: 'b87b42b3a738b4bf3da0a5aec4185498',
-      },
-    }).pipe(map((response: any) => response.data.results));
+    return this.http
+      .get<HeroResponse>(`${this.url}/characters`, {
+        params: {
+          nameStartsWith: term.trim(),
+          apikey: '06f1c915f17bf6a59b637e6b8ba49871',
+          ts: 'juan',
+          hash: 'b87b42b3a738b4bf3da0a5aec4185498',
+        },
+      })
+      .pipe(map((response) => response.data.results));
   }
 }
