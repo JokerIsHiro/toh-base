@@ -9,6 +9,8 @@ import { catchError, map, Observable, of, tap } from 'rxjs';
 export class HeroService {
   private url = 'https://gateway.marvel.com/v1/public';
 
+  totalHeroes: number = 0;
+
   constructor(private http: HttpClient) {}
 
   public getHeroes(): Observable<Hero[]> {
@@ -27,33 +29,31 @@ export class HeroService {
       .pipe(map((response) => response.data.results));
   }
 
-  public getPaginatedHeroes(
-    page: number,
-    itemsPerPage: number
-  ): Observable<{ heroes: Hero[]; total: number }> {
-    const offset = (page - 1) * itemsPerPage;
+  public getPaginatedHeroes(page: number): Observable<Hero[]> {
+    const offset = (page - 1) * 20;
 
     return this.http
-      .get<{ data: { results: Hero[]; total: number } }>(
-        `${this.url}/characters`,
-        {
-          params: {
-            apikey: '06f1c915f17bf6a59b637e6b8ba49871',
-            ts: 'juan',
-            hash: 'b87b42b3a738b4bf3da0a5aec4185498',
-            limit: itemsPerPage.toString(),
-            offset: offset.toString(),
-          },
-        }
-      )
+      .get<HeroResponse>(`${this.url}/characters`, {
+        params: {
+          apikey: '06f1c915f17bf6a59b637e6b8ba49871',
+          ts: 'juan',
+          hash: 'b87b42b3a738b4bf3da0a5aec4185498',
+          limit: '20',
+          offset: offset.toString(),
+        },
+      })
       .pipe(
-        map((heroe) => ({
-          heroes: heroe.data.results,
-          total: heroe.data.total,
-        })),
+        map((response) => {
+          const heroes = response.data.results;
+          const total = response.data.total;
+          
+          this.totalHeroes = total;
+  
+          return heroes;
+        }),
         catchError((error) => {
           console.error('Error al obtener héroes:', error);
-          return of({ heroes: [], total: 0 });
+          return of([]); // Retornar un array vacío en caso de error
         })
       );
   }

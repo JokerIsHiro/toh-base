@@ -14,11 +14,8 @@
   <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">
     Previous
   </button>
-  <span>Page {{ currentPage }} of {{ totalPages }}</span>
-  <button
-    (click)="changePage(currentPage + 1)"
-    [disabled]="currentPage === totalPages"
-  >
+  <span>Page {{ currentPage }} of {{totalPages}}</span>
+  <button (click)="changePage(currentPage + 1)">
     Next
   </button>
 </div>

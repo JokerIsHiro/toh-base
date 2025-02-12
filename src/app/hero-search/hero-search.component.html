@@ -1,11 +1,21 @@
 <div id="search-component">
   <label for="search-box">Hero Search</label>
-  <input #searchBox id="search-box" (keyup)="search(searchBox.value)" />
+  <div class="input-container">
+    <input
+      #searchBox
+      id="search-box"
+      (keyup)="search(searchBox.value)"
+    />
+    <mat-spinner
+      diameter="20"
+      class="loading-spinner"
+    ></mat-spinner>
+  </div>
 
   <ul class="search-result">
     @for(hero of heroes$ | async; track hero.id) {
     <li>
-      <a routerLink="/hero/{{hero.id}}">
+      <a routerLink="/hero/{{ hero.id }}">
         {{ hero.name }}
       </a>
     </li>
