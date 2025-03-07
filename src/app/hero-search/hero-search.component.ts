@@ -1,10 +1,9 @@
-import { Component, input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   debounceTime,
   distinctUntilChanged,
-  map,
+  finalize,
   Observable,
-  shareReplay,
   Subject,
   switchMap,
 } from 'rxjs';
@@ -22,21 +21,31 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 })
 export class HeroSearchComponent implements OnInit {
   heroes$!: Observable<Hero[]>;
+
   private searchTerms = new Subject<string>();
 
-  lastTerm: string = '';
+  isLoading = false;
 
   constructor(private heroService: HeroService) {}
 
   search(term: string): void {
+    this.isLoading = true;
     this.searchTerms.next(term);
   }
 
   ngOnInit(): void {
+    this.loadResults();
+  }
+
+  loadResults(): void {
     this.heroes$ = this.searchTerms.pipe(
       debounceTime(300),
       distinctUntilChanged(),
-      switchMap((term: string) => this.heroService.searchHeroes(term))
+      switchMap((term: string) =>
+        this.heroService
+          .searchHeroes(term)
+          .pipe(finalize(() => (this.isLoading = false)))
+      )
     );
   }
 }

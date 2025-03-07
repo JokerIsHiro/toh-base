@@ -5,11 +5,11 @@
   <div class="hero-card">
     <a routerLink="/hero/{{ hero.id }}">
       <div class="hero-img-wrapper">
-          <img
-            [attr.loading]="'lazy'"
-            src="{{ hero.thumbnail?.path }}.{{ hero.thumbnail?.extension }}"
-            class="hero-img"
-          />
+        <img
+          [attr.loading]="'lazy'"
+          src="{{ hero.thumbnail.path }}.{{ hero.thumbnail.extension }}"
+          class="hero-img"
+        />
       </div>
       <div class="hero-overlay">
         <div class="hero-name">

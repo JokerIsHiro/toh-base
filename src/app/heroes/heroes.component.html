@@ -1,21 +1,38 @@
 <h2>HEROES</h2>
-
-<ul class="heroes">
-  @for (hero of heroes; track hero.id) {
-  <li>
-    <a routerLink="/hero/{{ hero.id }}">
-      <span class="badge">{{ hero.id }}</span> {{ hero.name }}
-    </a>
-  </li>
-  }
-</ul>
+@if (isLoading) {
+<div class="spinner-container">
+  <mat-spinner></mat-spinner>
+</div>
+} @if (!isLoading) {
+<div class="heroes-container">
+  <ul class="heroes">
+    @for (hero of heroes; track hero.id) {
+    <li>
+      <div class="hero-card">
+        <a routerLink="/hero/{{ hero.id }}">
+          <div class="hero-img-wrapper">
+            <img
+              [attr.loading]="'lazy'"
+              src="{{ hero.thumbnail.path }}.{{ hero.thumbnail.extension }}"
+              alt="{{ hero.name }}"
+            />
+          </div>
+          <span class="badge-overlay-id">{{ hero.id }}</span>
+          <span class="badge-overlay-name">{{ hero.name }}</span>
+        </a>
+      </div>
+    </li>
+    }
+  </ul>
+</div>
 
 <div class="pagination-controls">
+  <button (click)="changePage(1)">First Page</button>
   <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">
     Previous
   </button>
-  <span>Page {{ currentPage }} of {{totalPages}}</span>
-  <button (click)="changePage(currentPage + 1)">
-    Next
-  </button>
+  <span>Page {{ currentPage }} of {{ totalPages }}</span>
+  <button (click)="changePage(currentPage + 1)">Next</button>
+  <button (click)="changePage(totalPages)">Last Page</button>
 </div>
+}

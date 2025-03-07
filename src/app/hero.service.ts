@@ -53,7 +53,7 @@ export class HeroService {
         }),
         catchError((error) => {
           console.error('Error al obtener héroes:', error);
-          return of([]); // Retornar un array vacío en caso de error
+          return of([]);
         })
       );
   }
